@@ -31,3 +31,36 @@ body {
     text-wrap: balance;
   }
 }
+
+/* Primary Button */
+.button-primary {
+  background: linear-gradient(to right, #6a11cb, #2575fc);
+  color: white;
+  font-weight: bold;
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.button-primary:hover {
+  background: linear-gradient(to right, #5a0ecb, #1e60fc);
+}
+
+/* Secondary Button */
+.button-secondary {
+  background: #f0f0f0;
+  color: #333;
+  font-weight: bold;
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.button-secondary:hover {
+  background: #e0e0e0;
+  color: #000;
+}

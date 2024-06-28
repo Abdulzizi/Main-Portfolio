@@ -2,7 +2,7 @@ import "./globals.css";
 import { Inter } from "next/font/google";
 import LocalFont from "next/font/local";
 import data from "../../data.json";
-import ParticlesComponent from "@/components/particles";
+import ParticlesComponent from "../components/particles";
 
 const username = process.env.GITHUB_USERNAME || data.githubUsername;
 const displayName = data.displayName || username;

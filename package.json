@@ -7,13 +7,15 @@
     "build": "npm run setup && next build",
     "build-only": "next build",
     "start": "next start",
-    "setup": "node ./lib/setup.mjs"
+    "setup": "node ./lib/setup.mjs",
+    "lint": "next lint"
   },
   "dependencies": {
     "@primer/octicons-react": "^19.8.0",
     "@primer/react": "^36.10.0",
     "@radix-ui/react-slot": "^1.1.0",
     "@tsparticles/react": "^3.0.0",
+    "axios": "^1.7.2",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "dotenv": "^16.4.5",
