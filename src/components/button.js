@@ -1,21 +1,22 @@
-import PropTypes from 'prop-types';
-import React from 'react';
+const Button = ({ children, type, variant }) => {
+  const baseClasses = 'py-2 px-4 rounded focus:outline-none transition duration-300 ease-in-out';
+  const variantClasses = {
+    primary: 'bg-purple-500 text-white border-purple-500 hover:bg-purple-700',
+    secondary: 'bg-gray-500 text-white border-gray-500 hover:bg-gray-700',
+    default: 'bg-blue-500 text-white border-blue-500 hover:bg-blue-700',
+  };
 
-const Button = ({ children, type, className, variant }) => {
-  let buttonClasses = 'py-2 px-4 rounded focus:outline-none';
+  let buttonClasses = baseClasses;
 
-  // Define variants
-  if (variant === 'primary') {
-    buttonClasses += ' bg-purple-500 hover:bg-purple-700 text-white font-bold';
-  } else if (variant === 'secondary') {
-    buttonClasses += ' bg-gray-500 hover:bg-gray-700 text-white font-bold';
-  } else {
-    buttonClasses += ' bg-blue-500 hover:bg-blue-700 text-white font-bold';
-  }
-
-  // Add custom classes if provided
-  if (className) {
-    buttonClasses += ` ${className}`;
+  switch (variant) {
+    case 'primary':
+      buttonClasses += ` ${variantClasses.primary}`;
+      break;
+    case 'secondary':
+      buttonClasses += ` ${variantClasses.secondary}`;
+      break;
+    default:
+      buttonClasses += ` ${variantClasses.default}`;
   }
 
   return (
@@ -26,19 +27,6 @@ const Button = ({ children, type, className, variant }) => {
       {children}
     </button>
   );
-};
-
-Button.propTypes = {
-  children: PropTypes.node.isRequired,
-  type: PropTypes.oneOf(['button', 'submit', 'reset']),
-  className: PropTypes.string,
-  variant: PropTypes.oneOf(['primary', 'secondary']),
-};
-
-Button.defaultProps = {
-  type: 'button',
-  variant: 'default',
-  children: "Click Me"
 };
 
 export default Button;

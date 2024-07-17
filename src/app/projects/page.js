@@ -2,6 +2,7 @@ import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { projects } from "./work";
+import Button from "../../components/button"
 
 import data from "../../../data.json";
 
@@ -76,9 +77,9 @@ const WorkDescription = ({ title, description, type, urls }) => {
       <div className="flex flex-col sm:flex-row justify-center md:justify-start gap-4">
         {urls.map((link, index) => (
           <Link key={index} href={link.url}>
-            <button className={link.name === "GitHub" ? "button-primary" : "button-secondary"}>
+            <Button type='button' variant={link.name === "GitHub" ? "primary" : "secondary"}>
               {link.name}
-            </button>
+            </Button>
           </Link>
         ))}
       </div>
