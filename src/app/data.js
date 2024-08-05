@@ -14,7 +14,8 @@ const config = {
 const axiosGithub = require('axios').default;
 
 export async function getUser(username) {
-	console.log('Fetching user data for', username);
+	console.log("🚀 ~ getUser ~ username:", username)
+	// console.log('Fetching user data for', username);
 	console.time('getUser');
 	try {
 		const res = await axiosGithub.get(`https://api.github.com/users/${username}`, config);
@@ -41,7 +42,8 @@ export async function getUser(username) {
 }
 
 export async function getRepos(username) {
-	console.log('Fetching repos for', username);
+	console.log("🚀 ~ getRepos ~ username:", username)
+	// console.log('Fetching repos for', username);
 	console.time('getRepos');
 	const res = await fetch('https://api.github.com/users/' + username + '/repos', {
 		headers: { Authorization: `Bearer ${process.env.GITHUB_TOKEN}` },
@@ -52,7 +54,8 @@ export async function getRepos(username) {
 }
 
 export async function getSocialAccounts(username) {
-	console.log('Fetching social accounts for', username);
+	console.log("🚀 ~ getSocialAccounts ~ Fetching social accounts for:", username)
+	// console.log('Fetching social accounts for', username);
 	console.time('getSocialAccounts');
 	const res = await fetch('https://api.github.com/users/' + username + '/social_accounts', {
 		headers: { Authorization: `Bearer ${process.env.GITHUB_TOKEN}` },
@@ -63,7 +66,8 @@ export async function getSocialAccounts(username) {
 }
 
 export const getPinnedRepos = cache(async (username) => {
-	console.log('Fetching pinned repos for', username);
+	console.log("🚀 ~ getPinnedRepos ~ Fetching pinned repos for:", username)
+	// console.log('Fetching pinned repos for', username);
 	console.time('getPinnedRepos');
 	const res = await fetch('https://api.github.com/graphql', {
 		method: 'POST',
@@ -79,7 +83,8 @@ export const getPinnedRepos = cache(async (username) => {
 const axios = require('axios').default;
 
 export async function getUserOrganizations(username) {
-	console.log('Fetching organizations for', username);
+	console.log("🚀 ~ getUserOrganizations ~ username :", username)
+	// console.log('Fetching organizations for', username);
 	console.time('getUserOrganizations');
 	try {
 		const res = await axios.post(
@@ -187,7 +192,8 @@ export const getRepositoryPackageJson = cache(async (username, reponame) => {
 }, HOURS_12);
 
 export const getRecentUserActivity = cache(async (username) => {
-	console.log('Fetching recent activity for', username);
+	console.log("🚀 ~ getRecentUserActivity ~ username:", username)
+	// console.log('Fetching recent activity for', username);
 	console.time('getRecentUserActivity');
 	const res = await fetch('https://api.github.com/users/' + username + '/events', {
 		headers: { Authorization: `Bearer ${process.env.GITHUB_TOKEN}` },

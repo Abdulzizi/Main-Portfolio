@@ -3,12 +3,14 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { projects } from "./work";
 import Button from "../../components/button"
+import { Navigation } from "../../components/nav";
 
 import data from "../../../data.json";
 
 const ProjectsPage = () => {
   return (
     <div className="container mx-auto px-4 py-12 text-white">
+      <Navigation />
       <div className="max-w-2xl mx-auto lg:mx-0 mt-16">
         <WorkHeader data={data} />
       </div>
@@ -54,6 +56,7 @@ const WorkHeader = ({ data }) => {
 const WorkDescription = ({ title, description, type, urls }) => {
   const highlightWords = (text) => {
     const keywords = ["simple", "easy", "good", "project", "show"];
+    
     return text.split(" ").map((word, index) =>
       keywords.includes(word.toLowerCase()) ? (
         <span
@@ -70,6 +73,7 @@ const WorkDescription = ({ title, description, type, urls }) => {
 
   return (
     <div className="w-full md:w-1/2 md:pl-8 text-center md:text-left">
+      
       <h3 className="text-xl font-bold mb-4">{title}</h3>
       <p className="text-lg mb-4">{highlightWords(description)}</p>
       <p className="text-lg mb-4">{type}</p>
