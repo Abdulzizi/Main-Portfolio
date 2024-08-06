@@ -27,7 +27,7 @@ const AboutPage = () => {
               height={200}
               src="https://github.com/Abdulzizi.png"
               alt="avatar"
-              className="w-32 md:w-48 h-auto rounded-full animate-spin"
+              className="w-32 md:w-48 h-auto rounded-full animate-bounce"
             />
           </Link>
         </div>

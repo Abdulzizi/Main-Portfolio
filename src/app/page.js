@@ -65,7 +65,7 @@ const LandingComponent = async () => {
           ))}
         </ul>
       </nav>
-      <div className="hidden w-screen h-px animate-glow md:block animate-fade-left bg-gradient-to-r from-zinc-300/0 via-zinc-300/50 to-zinc-300/0" />
+      <div className="hidden w-screen h-px animate-glow md:block animate-fadeOut animate-fade-left bg-gradient-to-r from-zinc-300/0 via-zinc-300/50 to-zinc-300/0" />
 
       <h1 className="flex items-center z-10 text-4xl font-bold hover:scale-110 text-transparent duration-1000 cursor-default text-edge-outline animate-title font-display sm:text-6xl md:text-9xl whitespace-nowrap">
         <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-500 to-pink-500">
@@ -74,7 +74,7 @@ const LandingComponent = async () => {
         <UserIcon promise={promise} />
       </h1>
 
-      <div className="hidden w-screen h-px animate-glow md:block animate-fade-right bg-gradient-to-r from-zinc-300/0 via-zinc-300/50 to-zinc-300/0" />
+      <div className="hidden w-screen h-px animate-glow md:block animate-fadeOut animate-fade-right bg-gradient-to-r from-zinc-300/0 via-zinc-300/50 to-zinc-300/0" />
       <div className="my-16 text-center animate-fade-in">
         <h2 className="text-lg text-zinc-500">
           <Suspense fallback={<p>Loading...</p>}>
