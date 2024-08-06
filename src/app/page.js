@@ -24,7 +24,7 @@ const UserIcon = async ({ promise }) => {
     width={100} 
     height={100} 
     src={user.avatar_url || data.avatarUrl} 
-    className="float-right rounded-xl mx-4" />
+    className="float-right rounded-3xl mx-4" />
   );
 };
 
@@ -36,7 +36,7 @@ const UserText = async ({ promise }) => {
   }
 
   return (
-    <p>Hello, You can call me {user.name || data.displayName}{'. '}{user.bio}</p>
+    <p>Hello there, You can call me {user.name || data.displayName}{'. '}{user.bio}</p>
   );
 };
 
