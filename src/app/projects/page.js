@@ -44,7 +44,7 @@ const WorkHeader = ({ data }) => {
       </h2>
       <p className="text-center md:text-left text-zinc-400">{data.description}</p>
       <Link
-        href="/work/github"
+        href="/projects/github"
         className="inline-block mt-4 md:mt-5 px-4 py-2 rounded-xl text-purple-500 border border-purple-500 hover:text-white hover:bg-purple-500 transition duration-300 ease-in-out"
       >
         Github Repo

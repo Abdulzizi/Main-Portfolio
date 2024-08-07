@@ -5,48 +5,23 @@ const MINUTES_5 = 60 * 5;
 const HOURS_1 = 60 * 60;
 const HOURS_12 = 60 * 60 * 12;
 
-
-const config = {
-	headers: {
-		Authorization: `Bearer ${process.env.GITHUB_TOKEN}`
-	}
-};
-const axiosGithub = require('axios').default;
-
+// TODO: Implement option to switch between info for authenticated user and other users.
 export async function getUser(username) {
-	console.log("🚀 ~ getUser ~ username:", username)
-	// console.log('Fetching user data for', username);
+	console.log('Fetching user data for', username);
 	console.time('getUser');
-	try {
-		const res = await axiosGithub.get(`https://api.github.com/users/${username}`, config);
-		// console.log(`[USER DATA] ${res.data}`);
-		console.timeEnd('getUser');
-
-		const user = await res.data;
-		return user;
-	} catch (error) {
-		if (error.response) {
-			// Server responded with a status other than 200 range
-			console.error(`Error fetching user data: ${error.response.status} ${error.response.statusText}`);
-			console.error(`Response data:`, error.response.data);
-		} else if (error.request) {
-			// No response received from server
-			console.error('No response received:', error.request);
-		} else {
-			// Error setting up the request
-			console.error('Error setting up request:', error.message);
-		}
-		console.timeEnd('getUser');
-		return null;
-	}
+	const res = await fetch('https://api.github.com/users/' + username, {
+		headers: { Authorization: `Bearer ${process.env.GH_TOKEN}` },
+		next: { revalidate }
+	});
+	console.timeEnd('getUser');
+	return res.json();
 }
 
 export async function getRepos(username) {
-	console.log("🚀 ~ getRepos ~ username:", username)
-	// console.log('Fetching repos for', username);
+	console.log('Fetching repos for', username);
 	console.time('getRepos');
 	const res = await fetch('https://api.github.com/users/' + username + '/repos', {
-		headers: { Authorization: `Bearer ${process.env.GITHUB_TOKEN}` },
+		headers: { Authorization: `Bearer ${process.env.GH_TOKEN}` },
 		next: { revalidate: MINUTES_5 }
 	});
 	console.timeEnd('getRepos');
@@ -54,11 +29,10 @@ export async function getRepos(username) {
 }
 
 export async function getSocialAccounts(username) {
-	console.log("🚀 ~ getSocialAccounts ~ Fetching social accounts for:", username)
-	// console.log('Fetching social accounts for', username);
+	console.log('Fetching social accounts for', username);
 	console.time('getSocialAccounts');
 	const res = await fetch('https://api.github.com/users/' + username + '/social_accounts', {
-		headers: { Authorization: `Bearer ${process.env.GITHUB_TOKEN}` },
+		headers: { Authorization: `Bearer ${process.env.GH_TOKEN}` },
 		next: { MINUTES_5 }
 	});
 	console.timeEnd('getSocialAccounts');
@@ -66,12 +40,11 @@ export async function getSocialAccounts(username) {
 }
 
 export const getPinnedRepos = cache(async (username) => {
-	console.log("🚀 ~ getPinnedRepos ~ Fetching pinned repos for:", username)
-	// console.log('Fetching pinned repos for', username);
+	console.log('Fetching pinned repos for', username);
 	console.time('getPinnedRepos');
 	const res = await fetch('https://api.github.com/graphql', {
 		method: 'POST',
-		headers: { Authorization: `Bearer ${process.env.GITHUB_TOKEN}` },
+		headers: { Authorization: `Bearer ${process.env.GH_TOKEN}` },
 		body: JSON.stringify({ query: `{user(login: "${username}") {pinnedItems(first: 6, types: REPOSITORY) {nodes {... on Repository {name}}}}}` }),
 	});
 	const pinned = await res.json();
@@ -80,42 +53,20 @@ export const getPinnedRepos = cache(async (username) => {
 	return names;
 });
 
-const axios = require('axios').default;
-
-export async function getUserOrganizations(username) {
-	console.log("🚀 ~ getUserOrganizations ~ username :", username)
-	// console.log('Fetching organizations for', username);
+export const getUserOrganizations = async (username) => {
+	console.log('Fetching organizations for', username);
 	console.time('getUserOrganizations');
-	try {
-		const res = await axios.post(
-			'https://api.github.com/graphql',
-			{
-				query: `{user(login: "${username}") {organizations(first: 6) {nodes {name,websiteUrl,url,avatarUrl,description}}}}`
-			},
-			config
-		);
-		console.timeEnd('getUserOrganizations');
-
-		if (res.data.errors) {
-			console.error(`GraphQL errors:`, res.data.errors);
-			return { data: { user: { organizations: { nodes: [] } } } };
-		}
-
-		const organizations = res.data;
-		return organizations;
-	} catch (error) {
-		if (error.response) {
-			console.error(`Error fetching organizations: ${error.response.status} ${error.response.statusText}`);
-			console.error(`Response data:`, error.response.data);
-		} else if (error.request) {
-			console.error('No response received:', error.request);
-		} else {
-			console.error('Error setting up request:', error.message);
-		}
-		console.timeEnd('getUserOrganizations');
-		return { data: { user: { organizations: { nodes: [] } } } }; // Return an empty structure on error
-	}
-}
+	const res = await fetch('https://api.github.com/graphql', {
+		next: { MINUTES_5 },
+		method: 'POST',
+		headers: { Authorization: `Bearer ${process.env.GH_TOKEN}` },
+		body: JSON.stringify({
+			query: `{user(login: "${username}") {organizations(first: 6) {nodes {name,websiteUrl,url,avatarUrl,description}}}}`
+		}),
+	});
+	console.timeEnd('getUserOrganizations');
+	return res.json();
+};
 
 export const getVercelProjects = async () => {
 	if (!process.env.VC_TOKEN) {
@@ -140,7 +91,7 @@ export const getVercelProjects = async () => {
 export const getNextjsLatestRelease = cache(async () => {
 	const res = await fetch('https://api.github.com/graphql', {
 		method: 'POST',
-		headers: { Authorization: `Bearer ${process.env.GITHUB_TOKEN}` },
+		headers: { Authorization: `Bearer ${process.env.GH_TOKEN}` },
 		body: JSON.stringify({
 			query: `{
 				repository(name: "next.js", owner: "vercel") {
@@ -168,7 +119,7 @@ export const getNextjsLatestRelease = cache(async () => {
 export const getRepositoryPackageJson = cache(async (username, reponame) => {
 	const res = await fetch('https://api.github.com/graphql', {
 		method: 'POST',
-		headers: { Authorization: `Bearer ${process.env.GITHUB_TOKEN}` },
+		headers: { Authorization: `Bearer ${process.env.GH_TOKEN}` },
 		body: JSON.stringify({
 			query: `{
 				repository(name: "${reponame}", owner: "${username}") {
@@ -184,7 +135,7 @@ export const getRepositoryPackageJson = cache(async (username, reponame) => {
 	const response = await res.json();
 	try {
 		const packageJson = JSON.parse(response.data.repository.object.text);
-		return packageJson;
+		return packageJson;		
 	} catch (error) {
 		console.error('Error parsing package.json', error);
 		return {};
@@ -192,11 +143,10 @@ export const getRepositoryPackageJson = cache(async (username, reponame) => {
 }, HOURS_12);
 
 export const getRecentUserActivity = cache(async (username) => {
-	console.log("🚀 ~ getRecentUserActivity ~ username:", username)
-	// console.log('Fetching recent activity for', username);
+	console.log('Fetching recent activity for', username);
 	console.time('getRecentUserActivity');
 	const res = await fetch('https://api.github.com/users/' + username + '/events', {
-		headers: { Authorization: `Bearer ${process.env.GITHUB_TOKEN}` },
+		headers: { Authorization: `Bearer ${process.env.GH_TOKEN}` },
 	});
 	const response = await res.json();
 	console.timeEnd('getRecentUserActivity');
@@ -205,7 +155,7 @@ export const getRecentUserActivity = cache(async (username) => {
 
 export const getTrafficPageViews = async (username, reponame) => {
 	const res = await fetch('https://api.github.com/repos/' + username + '/' + reponame + '/traffic/views', {
-		headers: { Authorization: `Bearer ${process.env.GITHUB_TOKEN}` },
+		headers: { Authorization: `Bearer ${process.env.GH_TOKEN}` },
 		next: { revalidate: HOURS_1 }
 	});
 	const response = await res.json();
@@ -222,7 +172,7 @@ export const getTrafficPageViews = async (username, reponame) => {
 
 export const getDependabotAlerts = cache(async (username, reponame) => {
 	const res = await fetch('https://api.github.com/repos/' + username + '/' + reponame + '/dependabot/alerts', {
-		headers: { Authorization: `Bearer ${process.env.GITHUB_TOKEN}` },
+		headers: { Authorization: `Bearer ${process.env.GH_TOKEN}` },
 	});
 
 	const response = await res.json();
@@ -241,12 +191,6 @@ export const getDependabotAlerts = cache(async (username, reponame) => {
 	return openAlertsBySeverity;
 }, HOURS_12);
 
-/**
- * Determines if a repository is using Next.js App Router or legacy pages/_app.jsx. Or both.
- * @param {*} repoOwner GitHub username
- * @param {string} repoName repository name
- * @returns Object with two booleans: isRouterPages and isRouterApp
- */
 export async function checkAppJsxExistence(repoOwner, repoName) {
 
 	const urlPagesApp = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/pages/_app.jsx`;
@@ -259,13 +203,13 @@ export async function checkAppJsxExistence(repoOwner, repoName) {
 	};
 
 	try {
-		const [isPagesRes, isAppLayoutRes] = await Promise.all([
+		const [ isPagesRes, isAppLayoutRes ] = await Promise.all([
 			fetch(urlPagesApp, {
-				headers: { Authorization: `Bearer ${process.env.GITHUB_TOKEN}` },
+				headers: { Authorization: `Bearer ${process.env.GH_TOKEN}` },
 				next: { HOURS_12 }
 			}),
 			fetch(urlAppLayout, {
-				headers: { Authorization: `Bearer ${process.env.GITHUB_TOKEN}` },
+				headers: { Authorization: `Bearer ${process.env.GH_TOKEN}` },
 				next: { HOURS_12 }
 			}),
 		]);
