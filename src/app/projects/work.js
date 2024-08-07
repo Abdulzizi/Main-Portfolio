@@ -3,7 +3,7 @@ export const projects = [
         title: "Portfolio Website",
         description: "This is the project  that I made you can see for yourself, this project  is very simple  and easy  to make because it is only to show  my work.",
         type: "Fullstack Website",
-        imageUrl: "/image/1.png",
+        imageUrl: "/images/1.png",
         url: [
             {
                 name: "GitHub",
