@@ -5,7 +5,7 @@
 	"displayName": "Abdulzizi",
 	"email": "jawadabdul307@gmail.com",
 	"projects": {
-		"blacklist": ["project-1", "project-2"],
+		"blacklist": [],
 		"heroNames": []
 	}
 }

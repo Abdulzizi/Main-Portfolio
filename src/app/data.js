@@ -226,7 +226,6 @@ export const getDependabotAlerts = cache(async (username, reponame) => {
 
 export async function checkAppJsxExistence(repoOwner, repoName) {
   const urlPagesApp = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/pages/_app.jsx`;
-  // TODO: Add more possible ways to check for App Router.
   const urlAppLayout = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/app/layout.jsx`;
 
   const res = {

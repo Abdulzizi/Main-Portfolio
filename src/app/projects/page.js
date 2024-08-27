@@ -1,8 +1,8 @@
-import React from 'react';
-import Image from 'next/image';
-import Link from 'next/link';
+import React from "react";
+import Image from "next/image";
+import Link from "next/link";
 import { projects } from "./work";
-import Button from "../../components/button"
+import Button from "../../components/button";
 import { Navigation } from "../../components/nav";
 
 import data from "../../../data.json";
@@ -18,7 +18,9 @@ const ProjectsPage = () => {
       {projects.map((project, index) => (
         <div
           key={index}
-          className={`flex flex-col md:flex-row items-center md:items-start mb-12 ${index % 2 !== 0 ? "md:flex-row-reverse" : ""}`}
+          className={`flex flex-col md:flex-row items-center md:items-start mb-12 ${
+            index % 2 !== 0 ? "md:flex-row-reverse" : ""
+          }`}
         >
           <WorkImage imageUrl={project.imageUrl} alt={project.alt} />
           <WorkDescription
@@ -42,7 +44,9 @@ const WorkHeader = ({ data }) => {
           of my works
         </span>
       </h2>
-      <p className="text-center md:text-left text-zinc-400">{data.description}</p>
+      <p className="text-center md:text-left text-zinc-400">
+        {data.description}
+      </p>
       <Link
         href="/projects/github"
         className="inline-block mt-4 md:mt-5 px-4 py-2 rounded-xl text-purple-500 border border-purple-500 hover:text-white hover:bg-purple-500 transition duration-300 ease-in-out"
@@ -56,7 +60,7 @@ const WorkHeader = ({ data }) => {
 const WorkDescription = ({ title, description, type, urls }) => {
   const highlightWords = (text) => {
     const keywords = ["simple", "easy", "good", "project", "show"];
-    
+
     return text.split(" ").map((word, index) =>
       keywords.includes(word.toLowerCase()) ? (
         <span
@@ -72,8 +76,7 @@ const WorkDescription = ({ title, description, type, urls }) => {
   };
 
   return (
-    <div className="w-full md:w-1/2 md:pl-8 text-center md:text-left">
-      
+    <div className="w-full md:w-1/2 md:px-8 text-center md:text-left">
       <h3 className="text-xl font-bold mb-4">{title}</h3>
       <p className="text-lg mb-4">{highlightWords(description)}</p>
       <p className="text-lg mb-4">{type}</p>
@@ -81,7 +84,10 @@ const WorkDescription = ({ title, description, type, urls }) => {
       <div className="flex flex-col sm:flex-row justify-center md:justify-start gap-4">
         {urls.map((link, index) => (
           <Link key={index} href={link.url}>
-            <Button type='button' variant={link.name === "GitHub" ? "primary" : "secondary"}>
+            <Button
+              type="button"
+              variant={link.name === "GitHub" ? "primary" : "secondary"}
+            >
               {link.name}
             </Button>
           </Link>
@@ -99,7 +105,7 @@ const WorkImage = ({ imageUrl, alt }) => {
           src={imageUrl}
           alt={alt}
           fill
-          style={{ objectFit: 'cover' }}
+          style={{ objectFit: "cover" }}
           priority
         />
       </div>
